@@ -64,11 +64,13 @@ namespace $rootnamespace$.DependencyResolution {
         #region Properties
 
         private HttpContextBase HttpContext {
-            get {
-                var ctx = Container.TryGetInstance<HttpContextBase>();
-                return ctx ?? new HttpContextWrapper(System.Web.HttpContext.Current);
-            }
-        }
+    	    get {
+                return (System.Web.HttpContext.Current == null
+        	    ? null
+        	    : (Container.TryGetInstance<HttpContextBase>() ??
+	                new HttpContextWrapper(System.Web.HttpContext.Current)));
+    	    }
+	}
 
         #endregion
 
